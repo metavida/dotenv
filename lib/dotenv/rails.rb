@@ -17,11 +17,12 @@ module Dotenv
 
       fail "The `app_env` must support StringInquirer methods (like `#production?` or `#development?`) #{app_env.inspect}" unless supports_inflection(app_env)
 
-      # Dotenv values for your local environment only
+      # Dotenv values for your local development environment only
       if app_env.development?
         to_load << File.join(app_root, '.env.custom')
-        to_load << File.join(app_root, '.env.local')
       end
+      # Dotenv values for the local computer
+      to_load << File.join(app_root, '.env.local')
 
       # Dotenv values specific to the current Rails.env
       app_env_dotenv = File.join(app_root, ".env.#{Rails.env}")

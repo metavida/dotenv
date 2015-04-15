@@ -55,8 +55,9 @@ describe Dotenv::Railtie do
     end
 
     it "loads Dotenv::Haiku.to_load" do
-      haiku_loader = Dotenv::Railtie.instance.haiku_loader
-      expect(Spring.watcher.items).to eql(haiku_loader.to_load)
+      existing_to_load = Dotenv::Railtie.instance.haiku_loader.to_load
+      existing_to_load = existing_to_load.select{ |i| File.exists?(i) }
+      expect(Spring.watcher.items).to eql(existing_to_load)
     end
 
     it "loads .env.local before .env" do
