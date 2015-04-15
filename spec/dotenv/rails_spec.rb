@@ -54,8 +54,8 @@ describe Dotenv::Railtie do
       expect(Spring.watcher.items).to include(path)
     end
 
-    it "loads Dotenv::Haiku.to_load" do
-      existing_to_load = Dotenv::Railtie.instance.haiku_loader.to_load
+    it "loads Dotenv::ToLoad" do
+      existing_to_load = Dotenv::Railtie.instance.to_load.to_a
       existing_to_load = existing_to_load.select{ |i| File.exists?(i) }
       expect(Spring.watcher.items).to eql(existing_to_load)
     end
