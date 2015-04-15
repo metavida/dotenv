@@ -8,7 +8,7 @@ Gem::Specification.new "dotenv", Dotenv::VERSION do |gem|
   gem.homepage      = "https://github.com/bkeepers/dotenv"
   gem.license       = "MIT"
 
-  gem.files         = `git ls-files README.md LICENSE lib bin | grep -v rails`
+  gem.files         = `git ls-files README.md LICENSE lib bin | grep -v rails`\
     .split($OUTPUT_RECORD_SEPARATOR)
   gem.executables   = gem.files.grep(/^bin\//).map { |f| File.basename(f) }
 
