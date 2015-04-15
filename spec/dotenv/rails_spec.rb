@@ -56,7 +56,7 @@ describe Dotenv::Railtie do
 
     it "loads Dotenv::ToLoad" do
       existing_to_load = Dotenv::Railtie.instance.to_load.to_a
-      existing_to_load = existing_to_load.select{ |i| File.exists?(i) }
+      existing_to_load = existing_to_load.select{ |i| File.exist?(i) }
       expect(Spring.watcher.items).to eql(existing_to_load)
     end
 

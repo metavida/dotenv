@@ -23,7 +23,7 @@ module Dotenv
       # Dotenv values specific to the current Rails.env
       app_env_dotenv = File.join(app_root, ".env.#{Rails.env}")
 
-      if File.exists?(app_env_dotenv) && File.size(app_env_dotenv) > 0
+      if File.exist?(app_env_dotenv) && File.size(app_env_dotenv) > 0
         to_load << app_env_dotenv
       else # If this file does *NOT* exist, then something has gone terribly wrong
         fail MissingDotenv, <<-FAIL.gsub(/^\s+/, '') unless app_env.development? || app_env.test?
