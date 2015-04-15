@@ -7,7 +7,7 @@ Gem::Specification.new "dotenv-haiku", Dotenv::VERSION do |gem|
   gem.description   = gem.summary = "Autoload dotenv with Haiku Learning-specific tweaks."
   gem.homepage      = "https://github.com/metavida/dotenv"
   gem.license       = "MIT"
-  gem.files         = `git ls-files lib | grep rails`
+  gem.files         = `git ls-files lib | grep rails`\
     .split($OUTPUT_RECORD_SEPARATOR) + ["README.md", "LICENSE"]
 
   gem.add_dependency "dotenv"
