@@ -1,5 +1,10 @@
 require "dotenv"
 
+# For debugging of rspec tests
+#def say(msg)
+#  `echo '#{msg.gsub(/['\n]/,'~')}' >> /tmp/rspec.log`
+#end
+
 module Dotenv
   class Haiku
     def initialize(options={})
@@ -10,11 +15,7 @@ module Dotenv
     def to_load
       to_load = []
 
-      if !supports_inflection(app_env)
-        app_env = ActiveSupport::StringInquirer.new(app_env.to_s) rescue app_env
-      end
-
-      fail "The `app_env` must support StringInquirer methods (like `#production?` or `#development?`) #{app_env.inspect}"
+      fail "The `app_env` must support StringInquirer methods (like `#production?` or `#development?`) #{app_env.inspect}" unless supports_inflection(app_env)
 
       # Dotenv values for your local environment only
       if app_env.development?
@@ -92,8 +93,7 @@ when /^4/
       # This will get called during the `before_configuration` callback, but you
       # can manually call `Dotenv::Railtie.load` if you needed it sooner.
       def load
-        haiku_loader = Dotenv::Haiku.new(:app_root=>root)
-        Dotenv.load(*haiku_loader.to_load))
+        Dotenv.load(*haiku_loader.to_load)
       end
 
       # Internal: `Rails.root` is nil in Rails 4.1 before the application is
@@ -103,6 +103,10 @@ when /^4/
         Rails.root || Pathname.new(ENV["RAILS_ROOT"] || Dir.pwd)
       end
 
+      def haiku_loader
+        Dotenv::Haiku.new(:app_root=>root)
+      end
+
       # Rails uses `#method_missing` to delegate all class methods to the
       # instance, which means `Kernel#load` gets called here. We don't want that.
       def self.load
@@ -110,3 +114,7 @@ when /^4/
       end
     end
   end
+else
+  haiku_loader = Dotenv::Haiku.new
+  Dotenv.load(*haiku_loader.to_load)
+end

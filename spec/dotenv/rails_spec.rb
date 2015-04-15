@@ -18,8 +18,12 @@ describe Dotenv::Railtie do
   end
 
   before do
+    allow(Rails).to receive(:version)
+      .and_return "4.0.0"
     allow(Rails).to receive(:root)
       .and_return Pathname.new(File.expand_path("../../fixtures", __FILE__))
+    allow(Rails).to receive(:env)
+      .and_return ActiveSupport::StringInquirer.new('test')
     Rails.application = double(:application)
     Spring.watcher = SpecWatcher.new
   end
@@ -50,12 +54,9 @@ describe Dotenv::Railtie do
       expect(Spring.watcher.items).to include(path)
     end
 
-    it "loads .env, .env.local, and .env.#{Rails.env}" do
-      expect(Spring.watcher.items).to eql([
-        Rails.root.join(".env.local").to_s,
-        Rails.root.join(".env.test").to_s,
-        Rails.root.join(".env").to_s
-      ])
+    it "loads Dotenv::Haiku.to_load" do
+      haiku_loader = Dotenv::Railtie.instance.haiku_loader
+      expect(Spring.watcher.items).to eql(haiku_loader.to_load)
     end
 
     it "loads .env.local before .env" do
