@@ -5,16 +5,21 @@ module Dotenv
     class InvalidAppEnv < ArgumentError; end
     class MissingDotenv < ArgumentError; end
 
+    # Available options:
+    # * :app_env: An ActiveSupport::StringInquirer instance.
+    #    If `false`, no ".env.#{app_env}" is loaded.
+    #    Default: Rails.env
+    # * :app_root: A full path to the location of the .env files
+    #    Default: Rails.root
     def initialize(options = {})
       @app_env        = options[:app_env] if options.key?(:app_env)
       @app_root       = options[:app_root] if options.key?(:app_root)
+
+      validate_app_env
     end
 
     def to_a
       to_load = []
-
-      validate_app_env
-
       # Dotenv values for your local development environment only
       to_load << File.join(app_root, ".env.custom") if app_env.development?
 
@@ -22,9 +27,11 @@ module Dotenv
       to_load << File.join(app_root, ".env.local")
 
       # Dotenv values specific to the current Rails.env
-      app_env_dotenv = File.join(app_root, ".env.#{Rails.env}")
-      protect_against_missing_app_env_dotenv(app_env_dotenv)
-      to_load << app_env_dotenv
+      if app_env
+        app_env_dotenv = File.join(app_root, ".env.#{app_env}")
+        protect_against_missing_app_env_dotenv(app_env_dotenv)
+        to_load << app_env_dotenv
+      end
 
       # Last, but not least, the good 'ol .env file
       to_load << File.join(app_root, ".env")
@@ -47,11 +54,20 @@ module Dotenv
     private
 
     def validate_app_env
-      return true if supports_inflection(app_env)
+      app_env_blank_fail if app_env.nil? || app_env.to_s.blank?
+      app_env_inquirer_fail unless supports_inflection(app_env)
+    end
 
+    def app_env_inquirer_fail
       fail InvalidAppEnv, <<-FAIL.gsub(/^\s+|\n/, "")
         The `app_env` must support StringInquirer methods
         (like `#production?` or `#development?`) #{app_env.inspect}"
+      FAIL
+    end
+
+    def app_env_blank_fail
+      fail InvalidAppEnv, <<-FAIL.gsub(/^\s+|\n/, "")
+        The `app_env` must not be nil nor empty: #{app_env.inspect}"
       FAIL
     end
 

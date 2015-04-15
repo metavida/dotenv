@@ -23,7 +23,7 @@ describe Dotenv::Railtie do
     allow(Rails).to receive(:root)
       .and_return Pathname.new(File.expand_path("../../fixtures", __FILE__))
     allow(Rails).to receive(:env)
-      .and_return ActiveSupport::StringInquirer.new('test')
+      .and_return ActiveSupport::StringInquirer.new("test")
     Rails.application = double(:application)
     Spring.watcher = SpecWatcher.new
   end
@@ -56,7 +56,7 @@ describe Dotenv::Railtie do
 
     it "loads Dotenv::ToLoad" do
       existing_to_load = Dotenv::Railtie.instance.to_load.to_a
-      existing_to_load = existing_to_load.select{ |i| File.exist?(i) }
+      existing_to_load = existing_to_load.select { |i| File.exist?(i) }
       expect(Spring.watcher.items).to eql(existing_to_load)
     end
 
@@ -103,6 +103,5 @@ describe Dotenv::Railtie do
           .to raise_error(Dotenv::ToLoad::InvalidAppEnv)
       end
     end
-
   end
 end

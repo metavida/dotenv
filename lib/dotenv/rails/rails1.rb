@@ -19,7 +19,7 @@ module Dotenv
     # Rails uses `#method_missing` to delegate all class methods to the
     # instance, which means `Kernel#load` gets called here. We don't want that.
     def self.load
-      instance.load
+      new.load
     end
   end
 end
