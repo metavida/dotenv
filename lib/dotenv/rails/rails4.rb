@@ -38,7 +38,7 @@ module Dotenv
     end
 
     def to_load
-      Dotenv::ToLoad.new(:app_root=>root)
+      Dotenv::ToLoad.new(:app_root => root)
     end
 
     # Rails uses `#method_missing` to delegate all class methods to the

@@ -6,7 +6,12 @@ require "dotenv/to_load"
 #  `echo '#{msg.gsub(/['\n]/,'~')}' >> /tmp/rspec.log`
 #end
 
-rails_version = Rails.version rescue 'no rails'
+rails_version = nil
+begin
+  rails_version = Rails.version
+rescue
+  rails_version = "no rails"
+end
 
 case rails_version
 when /^1/
