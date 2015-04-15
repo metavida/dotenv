@@ -12,10 +12,9 @@ case rails_version
 when /^1/
 
 when /^3/
-
+  require "dotenv/rails/rails3"
 when /^4/
   require "dotenv/rails/rails4"
 else
-  haiku_loader = Dotenv::Haiku.new
-  Dotenv.load(*haiku_loader.to_load)
+  Dotenv.load(*Dotenv::ToLoad.new)
 end

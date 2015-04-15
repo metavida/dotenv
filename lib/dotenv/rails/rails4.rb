@@ -1,6 +1,8 @@
 # Almost identical to v2.0.1 dotenv/rails.rb
 # https://github.com/bkeepers/dotenv/blob/v2.0.1/lib/dotenv/rails.rb
 
+require "dotenv"
+
 Dotenv.instrumenter = ActiveSupport::Notifications
 
 # Watch all loaded env files with Spring
