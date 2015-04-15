@@ -75,4 +75,36 @@ describe Dotenv::Railtie do
       end
     end
   end
+
+  context "load with errors" do
+    context "when Rails.env is 'production'" do
+      before do
+        allow(Rails).to receive(:env)
+          .and_return(ActiveSupport::StringInquirer.new('production'))
+      end
+
+      it "raises an error if .env.production does not exist" do
+        expect {
+          Dotenv::Railtie.load
+        }.to raise_error(Dotenv::ToLoad::MissingDotenv)
+      end
+    end
+
+    # Invalid Rails.env values
+    [
+      'production',   # String
+      1,              # Numeric
+      ['production'], # Array
+    ].each do |invalid_app_env|
+      it "raises an error with an invalid Rails.env == #{invalid_app_env.inspect} (doesn't support StringInquirer methods)" do
+        allow(Rails).to receive(:env)
+          .and_return(invalid_app_env)
+
+        expect {
+          Dotenv::Railtie.load
+        }.to raise_error(Dotenv::ToLoad::InvalidAppEnv)
+      end
+    end
+
+  end
 end
