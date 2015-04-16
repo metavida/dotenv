@@ -7,8 +7,8 @@ A fork of [the bkeepers/dotenv project](https://github.com/bkeepers/dotenv/).
 This fork exists to fulfill a few specific purposes for us
 
 * Enforce a few specific load rules
-** Load the `.env.custom` file on development environments.
-** Load the `".env.#{Rails.env}"` file and **fail hard** if the file does not exist on production.
+  * Load the `.env.custom` file on development environments.
+  * Load the `".env.#{Rails.env}"` file and **fail hard** if the file does not exist on production.
 * Better support for older Rails versions and non-Rails apps.
 
 ## Installation
