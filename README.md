@@ -16,7 +16,7 @@ This fork exists to fulfill a few specific purposes for us
 Add this line to the top of your application's Gemfile:
 
 ```ruby
-gem 'dotenv-haiku', git: 'git@github.com:metavida/dotenv.git', branch: 'haiku'
+gem 'dotenv-haiku', require: 'dotenv/rails', git: 'git@github.com:metavida/dotenv.git', branch: 'haiku'
 ```
 
 And then execute:
