@@ -1,6 +1,5 @@
 source "https://rubygems.org"
-gemspec :name => "dotenv"
-gemspec :name => "dotenv-rails"
+gemspec :name => "dotenv-haiku"
 
 group :guard do
   gem "guard-rspec"

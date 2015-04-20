@@ -11,4 +11,10 @@ Gem::Specification.new "dotenv-haiku", "0.1.0" do |gem|
     .split($OUTPUT_RECORD_SEPARATOR) + ["README.md", "LICENSE"]
 
   gem.add_dependency "dotenv"
+
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "rubocop"
+  gem.add_development_dependency "spring"
+  gem.add_development_dependency "railties", "~>4.0"
 end
