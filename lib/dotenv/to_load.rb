@@ -54,7 +54,7 @@ module Dotenv
     private
 
     def validate_app_env
-      app_env_blank_fail if app_env.nil? || app_env.to_s.blank?
+      app_env_blank_fail if app_env.nil? || app_env.to_s.empty?
       app_env_inquirer_fail unless supports_inflection(app_env)
     end
 
